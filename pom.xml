@@ -48,9 +48,9 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <java.version>1.8</java.version>
-    <jmh.version>1.19</jmh.version>
-    <nassau.version>0.13.0</nassau.version> <!-- (mentioned in documentation) -->
+    <java.version>21</java.version>
+    <jmh.version>1.38</jmh.version>
+    <nassau.version>0.13.0</nassau.version>
     <philadelphia.version>1.2.0</philadelphia.version>
   </properties>
 
@@ -74,7 +74,7 @@
       <dependency>
         <groupId>com.paritytrading.foundation</groupId>
         <artifactId>foundation</artifactId>
-        <version>0.3.0</version> <!-- (mentioned in documentation) -->
+        <version>0.3.0</version>
       </dependency>
       <dependency>
         <groupId>com.paritytrading.nassau</groupId>
@@ -99,33 +99,28 @@
       <dependency>
         <groupId>com.typesafe</groupId>
         <artifactId>config</artifactId>
-        <version>1.3.1</version>
+        <version>1.4.3</version>
       </dependency>
       <dependency>
         <groupId>it.unimi.dsi</groupId>
         <artifactId>fastutil</artifactId>
-        <version>8.1.0</version> <!-- (mentioned in documentation) -->
-      </dependency>
-      <dependency>
-        <groupId>joda-time</groupId>
-        <artifactId>joda-time</artifactId>
-        <version>2.10.6</version>
+        <version>8.5.13</version>
       </dependency>
       <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-lang3</artifactId>
-        <version>3.12.0</version>
+        <version>3.14.0</version>
         <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.jline</groupId>
         <artifactId>jline-reader</artifactId>
-        <version>3.8.0</version>
+        <version>3.26.1</version>
       </dependency>
       <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter</artifactId>
-        <version>5.7.0</version>
+        <version>5.11.0</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -157,44 +152,44 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-checkstyle-plugin</artifactId>
-          <version>3.1.0</version>
+          <version>3.4.0</version>
           <dependencies>
             <dependency>
               <groupId>com.puppycrawl.tools</groupId>
               <artifactId>checkstyle</artifactId>
-              <version>8.29</version>
+              <version>10.17.0</version>
             </dependency>
           </dependencies>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.8.0</version>
+          <version>3.11.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-dependency-plugin</artifactId>
-          <version>3.1.1</version>
+          <version>3.6.1</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-deploy-plugin</artifactId>
-          <version>2.8.2</version>
+          <version>3.1.1</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.0.1</version>
+          <version>3.7.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-release-plugin</artifactId>
-          <version>2.5.3</version>
+          <version>3.0.1</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
-          <version>3.2.1</version>
+          <version>3.6.0</version>
           <configuration>
             <minimizeJar>true</minimizeJar>
           </configuration>
@@ -210,7 +205,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.0.0-M5</version>
+          <version>3.3.0</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -227,8 +222,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>${java.version}</source>
-          <target>${java.version}</target>
+          <release>${java.version}</release>
         </configuration>
       </plugin>
       <plugin>

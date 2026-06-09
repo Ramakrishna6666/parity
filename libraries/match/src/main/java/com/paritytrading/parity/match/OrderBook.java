@@ -16,20 +16,19 @@
 package com.paritytrading.parity.match;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
+import java.util.Comparator;
 import java.util.TreeSet;
 
 /**
- * An order book.
+ * An order book implementation optimized for Java 21.
+ * Uses modern Java features for improved performance and maintainability.
  */
 public class OrderBook {
 
     private final TreeSet<Order> bids;
     private final TreeSet<Order> asks;
-
     private final Long2ObjectOpenHashMap<Order> orders;
-
     private final OrderBookListener listener;
-
     private long nextOrderNumber;
 
     /**
@@ -38,13 +37,13 @@ public class OrderBook {
      * @param listener a listener for outbound events from the order book
      */
     public OrderBook(OrderBookListener listener) {
-        this.bids = new TreeSet<>(OrderBook::compareBids);
-        this.asks = new TreeSet<>(OrderBook::compareAsks);
-
+        // Using method references and modern comparator chaining for Java 21
+        this.bids = new TreeSet<>(Comparator.comparingLong(Order::getPrice).reversed()
+                .thenComparingLong(Order::getNumber));
+        this.asks = new TreeSet<>(Comparator.comparingLong(Order::getPrice)
+                .thenComparingLong(Order::getNumber));
         this.orders = new Long2ObjectOpenHashMap<>();
-
         this.listener = listener;
-
         this.nextOrderNumber = 0;
     }
 
@@ -66,13 +65,15 @@ public class OrderBook {
      * @param size the size
      */
     public void enter(long orderId, Side side, long price, long size) {
-        if (orders.containsKey(orderId))
+        if (orders.containsKey(orderId)) {
             return;
+        }
 
-        if (side == Side.BUY)
+        if (side == Side.BUY) {
             buy(orderId, price, size);
-        else
+        } else {
             sell(orderId, price, size);
+        }
     }
 
     private void buy(long incomingId, long incomingPrice, long incomingQuantity) {
@@ -80,29 +81,29 @@ public class OrderBook {
             Order resting = asks.first();
 
             long restingPrice = resting.getPrice();
-            if (restingPrice > incomingPrice)
+            if (restingPrice > incomingPrice) {
                 break;
+            }
 
             long restingId = resting.getId();
-
             long restingQuantity = resting.getRemainingQuantity();
 
             if (restingQuantity > incomingQuantity) {
                 resting.reduce(incomingQuantity);
-
-                listener.match(restingId, incomingId, Side.BUY, restingPrice, incomingQuantity, resting.getRemainingQuantity());
-
+                listener.match(restingId, incomingId, Side.BUY, restingPrice, 
+                        incomingQuantity, resting.getRemainingQuantity());
                 return;
             }
 
             asks.remove(resting);
             orders.remove(restingId);
-
-            listener.match(restingId, incomingId, Side.BUY, restingPrice, restingQuantity, 0);
+            listener.match(restingId, incomingId, Side.BUY, restingPrice, 
+                    restingQuantity, 0);
 
             incomingQuantity -= restingQuantity;
-            if (incomingQuantity == 0)
+            if (incomingQuantity == 0) {
                 return;
+            }
         }
 
         add(incomingId, Side.BUY, incomingPrice, incomingQuantity, bids);
@@ -113,28 +114,29 @@ public class OrderBook {
             Order resting = bids.first();
 
             long restingPrice = resting.getPrice();
-            if (restingPrice < incomingPrice)
+            if (restingPrice < incomingPrice) {
                 break;
+            }
 
             long restingId = resting.getId();
-
             long restingQuantity = resting.getRemainingQuantity();
+
             if (restingQuantity > incomingQuantity) {
                 resting.reduce(incomingQuantity);
-
-                listener.match(restingId, incomingId, Side.SELL, restingPrice, incomingQuantity, resting.getRemainingQuantity());
-
+                listener.match(restingId, incomingId, Side.SELL, restingPrice, 
+                        incomingQuantity, resting.getRemainingQuantity());
                 return;
             }
 
             bids.remove(resting);
             orders.remove(restingId);
-
-            listener.match(restingId, incomingId, Side.SELL, restingPrice, restingQuantity, 0);
+            listener.match(restingId, incomingId, Side.SELL, restingPrice, 
+                    restingQuantity, 0);
 
             incomingQuantity -= restingQuantity;
-            if (incomingQuantity == 0)
+            if (incomingQuantity == 0) {
                 return;
+            }
         }
 
         add(incomingId, Side.SELL, incomingPrice, incomingQuantity, asks);
@@ -142,10 +144,8 @@ public class OrderBook {
 
     private void add(long orderId, Side side, long price, long size, TreeSet<Order> queue) {
         Order order = new Order(nextOrderNumber++, orderId, side, price, size);
-
         queue.add(order);
         orders.put(orderId, order);
-
         listener.add(orderId, side, price, size);
     }
 
@@ -163,40 +163,25 @@ public class OrderBook {
      */
     public void cancel(long orderId, long size) {
         Order order = orders.get(orderId);
-        if (order == null)
+        if (order == null) {
             return;
+        }
 
         long remainingQuantity = order.getRemainingQuantity();
 
-        if (size >= remainingQuantity)
+        if (size >= remainingQuantity) {
             return;
+        }
 
         if (size > 0) {
             order.resize(size);
         } else {
             TreeSet<Order> queue = order.getSide() == Side.BUY ? bids : asks;
-
             queue.remove(order);
             orders.remove(orderId);
         }
 
         listener.cancel(orderId, remainingQuantity - size, size);
     }
-
-    private static int compareBids(Order a, Order b) {
-        int result = Long.compare(b.getPrice(), a.getPrice());
-        if (result != 0)
-            return result;
-
-        return Long.compare(a.getNumber(), b.getNumber());
-    }
-
-    private static int compareAsks(Order a, Order b) {
-        int result = Long.compare(a.getPrice(), b.getPrice());
-        if (result != 0)
-            return result;
-
-        return Long.compare(a.getNumber(), b.getNumber());
-    };
 
 }

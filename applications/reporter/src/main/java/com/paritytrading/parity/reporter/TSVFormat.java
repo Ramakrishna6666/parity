@@ -35,20 +35,17 @@ class TSVFormat extends TradeListener {
 
     private final Instruments instruments;
 
-    private final Map<String, String> formats;
+    private final Map<String, String> formats = new HashMap<>();
 
     TSVFormat(Instruments instruments) {
         this.instruments = instruments;
-
-        this.formats = new HashMap<>();
 
         for (Instrument instrument : instruments) {
             int priceFractionDigits = instrument.getPriceFractionDigits();
             int sizeFractionDigits  = instrument.getSizeFractionDigits();
 
-            String format = "%." + sizeFractionDigits + "f\t%." + priceFractionDigits + "f\t";
-
-            formats.put(instrument.asString(), format);
+            formats.put(instrument.asString(), String.format("%%1.%df\t%%1.%df\t",
+                    sizeFractionDigits, priceFractionDigits));
         }
 
         printf(HEADER);

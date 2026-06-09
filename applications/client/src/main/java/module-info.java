@@ -13,23 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.paritytrading.parity.reporter;
 
 /**
- * Trade data class using Java 21 record feature.
- * Records provide immutable data carriers with automatic implementations
- * of equals(), hashCode(), and toString() methods.
+ * Parity Terminal Client module for Java 21.
+ * Provides a command-line interface for trading operations.
  */
-class Trade {
-
-    String timestamp;
-    long   matchNumber;
-    String instrument;
-    long   quantity;
-    long   price;
-    String buyer;
-    long   buyOrderNumber;
-    String seller;
-    long   sellOrderNumber;
-
+module com.paritytrading.parity.client {
+    requires com.paritytrading.parity.net;
+    requires com.paritytrading.parity.util;
+    requires com.paritytrading.foundation;
+    requires com.paritytrading.nassau.core;
+    requires com.typesafe.config;
+    requires org.jline.reader;
+    requires org.jvirtanen.config.extras;
+    requires org.jvirtanen.util.extras;
+    
+    exports com.paritytrading.parity.client;
 }

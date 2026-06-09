@@ -30,11 +30,12 @@ import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.annotations.TearDown;
 import org.openjdk.jmh.annotations.Warmup;
 
 @Warmup(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
 @Measurement(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
-@Fork(value = 3, jvmArgsAppend = {"-XX:+UseParallelGC", "-Xms1G", "-Xmx1G"})
+@Fork(value = 3, jvmArgsAppend = {"-XX:+UseG1GC", "-Xms1G", "-Xmx1G"})
 @State(Scope.Benchmark)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @BenchmarkMode(Mode.SampleTime)
@@ -63,6 +64,12 @@ public class MarketBenchmark {
         market.open(INSTRUMENT);
 
         nextOrderId = 0;
+    }
+
+    @TearDown(Level.Iteration)
+    public void cleanup() {
+        // Cleanup resources after each iteration
+        market = null;
     }
 
     @Benchmark

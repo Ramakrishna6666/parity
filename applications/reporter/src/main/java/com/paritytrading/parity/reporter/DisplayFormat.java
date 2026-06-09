@@ -26,10 +26,10 @@ class DisplayFormat extends TradeListener {
     DisplayFormat(Instruments instruments) {
         this.instruments = instruments;
 
+        TableHeader header = new TableHeader();
+
         int priceWidth = instruments.getPriceWidth();
         int sizeWidth  = instruments.getSizeWidth();
-
-        TableHeader header = new TableHeader();
 
         header.add("Timestamp",       12);
         header.add("Inst",             8);

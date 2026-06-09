@@ -13,23 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.paritytrading.parity.reporter;
 
 /**
- * Trade data class using Java 21 record feature.
- * Records provide immutable data carriers with automatic implementations
- * of equals(), hashCode(), and toString() methods.
+ * Parity Network Protocols module for Java 21+.
+ * Provides network protocol implementations for the Parity Trading System.
  */
-class Trade {
-
-    String timestamp;
-    long   matchNumber;
-    String instrument;
-    long   quantity;
-    long   price;
-    String buyer;
-    long   buyOrderNumber;
-    String seller;
-    long   sellOrderNumber;
-
+module com.paritytrading.parity.net {
+    requires com.paritytrading.nassau.core;
+    
+    exports com.paritytrading.parity.net;
+    exports com.paritytrading.parity.net.pmd;
+    exports com.paritytrading.parity.net.poe;
+    exports com.paritytrading.parity.net.pmr;
 }

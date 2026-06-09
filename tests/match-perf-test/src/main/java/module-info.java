@@ -13,23 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.paritytrading.parity.reporter;
 
 /**
- * Trade data class using Java 21 record feature.
- * Records provide immutable data carriers with automatic implementations
- * of equals(), hashCode(), and toString() methods.
+ * Parity Matching Algorithm Performance Test module for Java 21+.
+ * Contains JMH microbenchmarks for the Parity Matching Algorithm.
  */
-class Trade {
-
-    String timestamp;
-    long   matchNumber;
-    String instrument;
-    long   quantity;
-    long   price;
-    String buyer;
-    long   buyOrderNumber;
-    String seller;
-    long   sellOrderNumber;
-
+module com.paritytrading.parity.match.perf {
+    requires com.paritytrading.parity.match;
+    requires jmh.core;
+    
+    // Open the package to JMH for reflection-based benchmark discovery
+    opens com.paritytrading.parity.match.perf to jmh.core;
 }

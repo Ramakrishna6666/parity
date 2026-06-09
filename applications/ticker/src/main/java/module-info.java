@@ -13,23 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.paritytrading.parity.reporter;
 
 /**
- * Trade data class using Java 21 record feature.
- * Records provide immutable data carriers with automatic implementations
- * of equals(), hashCode(), and toString() methods.
+ * Parity Stock Ticker module for Java 21.
+ * Provides stock ticker functionality for market data display.
  */
-class Trade {
-
-    String timestamp;
-    long   matchNumber;
-    String instrument;
-    long   quantity;
-    long   price;
-    String buyer;
-    long   buyOrderNumber;
-    String seller;
-    long   sellOrderNumber;
-
+module com.paritytrading.parity.ticker {
+    requires com.paritytrading.parity.book;
+    requires com.paritytrading.parity.file;
+    requires com.paritytrading.parity.net;
+    requires com.paritytrading.parity.util;
+    requires com.paritytrading.nassau.core;
+    requires com.paritytrading.nassau.util;
+    requires com.typesafe.config;
+    requires org.jvirtanen.config.extras;
+    requires org.jvirtanen.util.extras;
+    
+    exports com.paritytrading.parity.ticker;
 }

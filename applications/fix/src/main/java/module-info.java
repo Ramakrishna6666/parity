@@ -13,23 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.paritytrading.parity.reporter;
 
 /**
- * Trade data class using Java 21 record feature.
- * Records provide immutable data carriers with automatic implementations
- * of equals(), hashCode(), and toString() methods.
+ * Parity FIX Gateway module for Java 21.
+ * Provides FIX protocol gateway for trading operations.
  */
-class Trade {
-
-    String timestamp;
-    long   matchNumber;
-    String instrument;
-    long   quantity;
-    long   price;
-    String buyer;
-    long   buyOrderNumber;
-    String seller;
-    long   sellOrderNumber;
-
+module com.paritytrading.parity.fix {
+    requires com.paritytrading.parity.net;
+    requires com.paritytrading.parity.util;
+    requires com.paritytrading.foundation;
+    requires com.paritytrading.nassau.core;
+    requires com.paritytrading.philadelphia.core;
+    requires com.paritytrading.philadelphia.fix44;
+    requires com.typesafe.config;
+    requires org.jvirtanen.config.extras;
+    requires org.jvirtanen.util.extras;
+    
+    exports com.paritytrading.parity.fix;
 }

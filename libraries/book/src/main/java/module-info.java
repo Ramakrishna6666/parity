@@ -13,23 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.paritytrading.parity.reporter;
 
 /**
- * Trade data class using Java 21 record feature.
- * Records provide immutable data carriers with automatic implementations
- * of equals(), hashCode(), and toString() methods.
+ * Parity Order Book module for Java 21+.
+ * 
+ * <p>This module provides high-performance order book reconstruction and management
+ * for the Parity Trading System. It includes support for order lifecycle management,
+ * market data updates, and trade execution tracking.</p>
+ * 
+ * @since 0.7.1
  */
-class Trade {
-
-    String timestamp;
-    long   matchNumber;
-    String instrument;
-    long   quantity;
-    long   price;
-    String buyer;
-    long   buyOrderNumber;
-    String seller;
-    long   sellOrderNumber;
-
+module com.paritytrading.parity.book {
+    requires it.unimi.dsi.fastutil;
+    
+    exports com.paritytrading.parity.book;
 }

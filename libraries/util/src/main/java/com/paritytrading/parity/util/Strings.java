@@ -15,16 +15,22 @@
  */
 package com.paritytrading.parity.util;
 
-import java.util.Arrays;
-
+/**
+ * Utility class for string operations.
+ * Updated to use Java 11+ String.repeat() method for better performance.
+ */
 class Strings {
 
+    /**
+     * Repeat a character count times.
+     * Uses Java 11+ String.repeat() for better performance.
+     *
+     * @param c the character to repeat
+     * @param count the number of times to repeat
+     * @return a string with the character repeated count times
+     */
     static String repeat(char c, int count) {
-        char[] a = new char[count];
-
-        Arrays.fill(a, c);
-
-        return new String(a);
+        return String.valueOf(c).repeat(count);
     }
 
 }

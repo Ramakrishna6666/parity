@@ -35,6 +35,9 @@ public class TAQ {
 
     /**
      * A Quote record.
+     * 
+     * Note: Using traditional class structure for backward compatibility
+     * and to allow mutable fields for performance-critical scenarios.
      */
     public static class Quote {
 
@@ -76,6 +79,9 @@ public class TAQ {
 
     /**
      * A Trade record.
+     * 
+     * Note: Using traditional class structure for backward compatibility
+     * and to allow mutable fields for performance-critical scenarios.
      */
     public static class Trade {
 

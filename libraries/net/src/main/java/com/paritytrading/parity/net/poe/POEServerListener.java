@@ -15,7 +15,7 @@
  */
 package com.paritytrading.parity.net.poe;
 
-import com.paritytrading.parity.net.poe.POE.*;
+import static com.paritytrading.parity.net.poe.POE.*;
 
 import java.io.IOException;
 

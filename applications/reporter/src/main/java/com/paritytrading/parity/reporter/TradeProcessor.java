@@ -26,17 +26,13 @@ import java.util.Map;
 
 class TradeProcessor implements PMRListener {
 
-    private final Map<Long, Order> orders;
-
-    private final Trade trade;
-
     private final TradeListener listener;
 
+    private final Trade trade = new Trade();
+
+    private final Map<Long, Order> orders = new HashMap<>();
+
     TradeProcessor(TradeListener listener) {
-        this.orders = new HashMap<>();
-
-        this.trade = new Trade();
-
         this.listener = listener;
     }
 

@@ -85,6 +85,19 @@ public class TAQConfig {
         return sizeFormats.getOrDefault(instrument, defaultSizeFormat);
     }
 
+    private static DecimalFormat newFormat() {
+        return new DecimalFormat("0", SYMBOLS);
+    }
+
+    private static DecimalFormat getFormat(Map<String, DecimalFormat> formats, String instrument) {
+        return formats.computeIfAbsent(instrument, key -> newFormat());
+    }
+
+    private static void setFractionDigits(DecimalFormat format, int fractionDigits) {
+        format.setMinimumFractionDigits(fractionDigits);
+        format.setMaximumFractionDigits(fractionDigits);
+    }
+
     /**
      * A configuration builder. The builder uses the following default values:
      *
@@ -196,19 +209,6 @@ public class TAQConfig {
                     defaultPriceFormat, defaultSizeFormat);
         }
 
-    }
-
-    private static DecimalFormat newFormat() {
-        return new DecimalFormat("0", SYMBOLS);
-    }
-
-    private static DecimalFormat getFormat(Map<String, DecimalFormat> formats, String instrument) {
-        return formats.computeIfAbsent(instrument, (key) -> newFormat());
-    }
-
-    private static void setFractionDigits(DecimalFormat format, int fractionDigits) {
-        format.setMinimumFractionDigits(fractionDigits);
-        format.setMaximumFractionDigits(fractionDigits);
     }
 
 }

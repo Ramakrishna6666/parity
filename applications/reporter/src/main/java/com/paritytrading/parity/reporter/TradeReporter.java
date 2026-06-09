@@ -60,25 +60,28 @@ class TradeReporter {
     private static void main(Config config, boolean tsv) throws IOException {
         Instruments instruments = Instruments.fromConfig(config, "instruments");
 
-        MessageListener listener = new PMRParser(new TradeProcessor(tsv ?
-                    new TSVFormat(instruments) : new DisplayFormat(instruments)));
+        TradeListener listener = tsv ? new TSVFormat(instruments) : new DisplayFormat(instruments);
 
-        if (config.hasPath("trade-report.multicast-interface")) {
+        MessageListener parser = new PMRParser(new TradeProcessor(listener));
+
+        String transport = config.getString("trade-report.transport");
+
+        if (transport.equals("moldudp64")) {
             NetworkInterface multicastInterface = Configs.getNetworkInterface(config, "trade-report.multicast-interface");
-            InetAddress      multicastGroup     = Configs.getInetAddress(config, "trade-report.multicast-group");
-            int              multicastPort      = Configs.getPort(config, "trade-report.multicast-port");
-            InetAddress      requestAddress     = Configs.getInetAddress(config, "trade-report.request-address");
-            int              requestPort        = Configs.getPort(config, "trade-report.request-port");
+            InetAddress multicastGroup = Configs.getInetAddress(config, "trade-report.multicast-group");
+            int multicastPort = Configs.getPort(config, "trade-report.multicast-port");
+            InetAddress requestAddress = Configs.getInetAddress(config, "trade-report.request-address");
+            int requestPort = Configs.getPort(config, "trade-report.request-port");
 
             MoldUDP64.receive(multicastInterface, new InetSocketAddress(multicastGroup, multicastPort),
-                    new InetSocketAddress(requestAddress, requestPort), listener);
+                    new InetSocketAddress(requestAddress, requestPort), parser);
         } else {
-            InetAddress address  = Configs.getInetAddress(config, "trade-report.address");
-            int         port     = Configs.getPort(config, "trade-report.port");
-            String      username = config.getString("trade-report.username");
-            String      password = config.getString("trade-report.password");
+            InetAddress address = Configs.getInetAddress(config, "trade-report.address");
+            int port = Configs.getPort(config, "trade-report.port");
+            String username = config.getString("trade-report.username");
+            String password = config.getString("trade-report.password");
 
-            SoupBinTCP.receive(new InetSocketAddress(address, port), username, password, listener);
+            SoupBinTCP.receive(new InetSocketAddress(address, port), username, password, parser);
         }
     }
 

@@ -15,27 +15,23 @@
  */
 package com.paritytrading.parity.match;
 
-class Order {
+/**
+ * Represents an order in the order book.
+ * Enhanced for Java 21 with improved encapsulation and modern patterns.
+ */
+final class Order {
 
     private final long number;
-
     private final long id;
-
     private final Side side;
-
     private final long price;
-
     private long remainingQuantity;
 
     Order(long number, long id, Side side, long price, long size) {
         this.number = number;
-
         this.id = id;
-
         this.side = side;
-
         this.price = price;
-
         this.remainingQuantity = size;
     }
 
